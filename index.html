@@ -12,6 +12,7 @@
         .true-button { background-color: green; color: white; }
         .false-button { background-color: red; color: white; }
         #questionNumber { font-size: 20px; }
+        #restartButton { display: none; }
     </style>
 </head>
 <body>
@@ -21,6 +22,7 @@
 <div id="imageContainer"></div>
 <button class="button true-button" onclick="answer(true)">Правда</button>
 <button class="button false-button" onclick="answer(false)">Ложь</button>
+<button class="button" id="restartButton" onclick="restartGame()">Перезапустить игру</button>
 
 <script>
 let questions = [];
@@ -49,6 +51,7 @@ function loadQuestions() {
 function startGame() {
     currentQuestionIndex = 0;
     correctAnswers = 0;
+    document.getElementById('restartButton').style.display = 'none'; // Скрыть кнопку перезапуска
     showQuestion();
 }
 
@@ -87,6 +90,12 @@ function answer(isTrue) {
 function endGame() {
     document.getElementById('question').innerText = `Игра окончена! Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
     document.getElementById('imageContainer').innerHTML = '';
+    document.getElementById('restartButton').style.display = 'block'; // Показать кнопку перезапуска
+}
+
+// Функция для перезапуска игры
+function restartGame() {
+    loadQuestions(); // Перезагрузить вопросы и начать игру заново
 }
 
 // Загрузка вопросов при загрузке страницы
