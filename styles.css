@@ -25,6 +25,11 @@ body {
     margin: 20px 0; /* Отступы сверху и снизу */
 }
 
+.link-container {
+    text-align: center; /* Центрирует ссылку */
+    margin-top: 20px; /* Отступ сверху */
+}
+
 button {
     padding: 15px 0; /* Отступы внутри кнопок */
     margin: 10px; /* Отступы между кнопками */
