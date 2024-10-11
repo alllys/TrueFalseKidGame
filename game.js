@@ -1,14 +1,14 @@
 let allQuestions = [];
 let currentQuestionIndex = 0;
 let correctAnswers = 0;
-let questions = []; // Массив для 10 вопросов
+let questions = []; // Array for 10 questions
 
-// Функция для загрузки вопросов
+// Function to load questions
 function loadQuestions() {
     fetch('questions.json')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Сеть не отвечает');
+                throw new Error('Network error');
             }
             return response.json();
         })
@@ -17,122 +17,94 @@ function loadQuestions() {
             startGame();
         })
         .catch(error => {
-            console.error('Ошибка при загрузке вопросов:', error);
+            console.error('Error loading questions:', error);
         });
 }
 
-// Функция для начала игры
+// Function to start the game
 function startGame() {
     currentQuestionIndex = 0;
     correctAnswers = 0;
-    document.getElementById('restartButton').style.display = 'none'; // Скрыть кнопку перезапуска
-    document.getElementById('feedback').innerText = ''; // Очистить сообщения
-    questions = getRandomQuestions(10); // Получить случайные 10 вопросов
+    document.getElementById('restartButton').style.display = 'none'; // Hide the restart button
+    document.getElementById('feedback').innerText = ''; // Clear messages
+    questions = getRandomQuestions(10); // Get 10 random questions
     showQuestion();
 }
 
-// Функция для получения случайных вопросов
+// Function to get random questions
 function getRandomQuestions(num) {
-    const shuffled = allQuestions.sort(() => 0.5 - Math.random()); // Перемешать вопросы
-    return shuffled.slice(0, num); // Вернуть первые num вопросов
+    const shuffled = allQuestions.sort(() => 0.5 - Math.random()); // Shuffle questions
+    return shuffled.slice(0, num); // Return the first num questions
 }
 
-// Функция для отображения текущего вопроса
+// Function to display the current question
 function showQuestion() {
     if (currentQuestionIndex < questions.length) {
         const question = questions[currentQuestionIndex];
         document.getElementById('question').innerText = question.text;
-        document.getElementById('questionNumber').innerText = `Вопрос ${currentQuestionIndex + 1} из ${questions.length}`;
-        showImage(question.object);
-        document.getElementById('feedback').innerText = ''; // Очистить предыдущее сообщение
+        document.getElementById('questionNumber').innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+        document.getElementById('feedback').innerText = ''; // Clear previous message
     } else {
         endGame();
     }
 }
 
-// Функция для генерации ASCII-арт
-function generateAsciiArt(object) {
-    const asciiArt = `
-          ,--.
-       ,--.'|
-   ,--,|  | :                    ,--,
-,---.'|  | |                    |  |
-|   | : _,'|  .--,      ,--,  ,--,|
-:   : |/  /| /       \   /   |   | |
-|   |   .  /| .--, |   |   |   | |
-|   |  |  | . |  | |   |   |   | |
-'   |  |  | | |  | |   |   |   | |
-|   |  |  | | |  | |   |   |   | |
-'---'--'---' '---'---'   '---'---'
-    `;
-    return asciiArt.replace(/ +/g, ' '); // Удаление лишних пробелов
-}
-
-// Функция для отображения ASCII-арт на канвасе
-function showImage(object) {
-    const canvas = document.getElementById('textCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // Устанавливаем размеры канваса
-    canvas.width = 400;  // ширина канваса
-    canvas.height = 300; // высота канваса
-
-    // Очищаем канвас
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Устанавливаем стиль текста
-    ctx.fillStyle = 'black'; // Цвет текста
-    ctx.font = '16px monospace'; // Шрифт текста
-    ctx.textAlign = 'left'; // Выравнивание текста
-    ctx.textBaseline = 'top'; // Выравнивание текста по верху
-
-    // Генерируем ASCII-арт
-    const asciiArt = generateAsciiArt(object);
-    const lines = asciiArt.split('\n'); // Разбиваем ASCII-арт на строки
-
-    // Рисуем каждую строку на канвасе
-    lines.forEach((line, index) => {
-        ctx.fillText(line, 10, 20 + index * 20); // Отрисовка строки
-    });
-
-    // Отображаем канвас
-    canvas.style.display = 'block';
-}
-
-// Функция для обработки ответа
+// Function to handle answer
 function answer(isTrue) {
     const question = questions[currentQuestionIndex];
     const feedback = document.getElementById('feedback');
 
-    // Проверяем правильность ответа
+    // Check answer correctness
     if (question.answer === isTrue) {
         correctAnswers++;
-        feedback.innerText = 'Правильно!'; // Отображаем сообщение о правильном ответе
-        feedback.style.color = 'green'; // Задаем цвет текста
+        feedback.innerText = 'Correct!'; // Show correct answer message
+        feedback.style.color = 'green'; // Set text color
     } else {
-        feedback.innerText = 'Неправильно!'; // Отображаем сообщение о неправильном ответе
-        feedback.style.color = 'red'; // Задаем цвет текста
+        feedback.innerText = 'Incorrect!'; // Show incorrect answer message
+        feedback.style.color = 'red'; // Set text color
     }
 
-    // Задержка перед показом следующего вопроса
+    // Show image based on answer correctness
+    showImage(question.answer);
+
+    // Delay before showing the next question
     setTimeout(() => {
         currentQuestionIndex++;
         showQuestion();
-    }, 1000); // 1000 мс = 1 секунда
+    }, 2000); // 2000 ms = 2 seconds
 }
 
-// Функция для завершения игры
+// Function to display image based on answer
+function showImage(isTrue) {
+    const imageContainer = document.getElementById('imageContainer');
+    imageContainer.innerHTML = ''; // Clear previous image
+
+    // Create an image element
+    const img = document.createElement('img');
+    img.style.maxWidth = '100%';
+
+    // Set the image source based on the answer
+    if (isTrue) {
+        img.src = 'https://img.icons8.com/dog'; // Replace with an appropriate image URL for true answer
+    } else {
+        img.src = 'https://img.icons8.com/cat'; // Replace with an appropriate image URL for false answer
+    }
+
+    // Append the image to the image container
+    imageContainer.appendChild(img);
+}
+
+// Function to end the game
 function endGame() {
-    document.getElementById('question').innerText = `Игра окончена! Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
-    document.getElementById('imageContainer').innerHTML = ''; // Очистить контейнер для изображений
-    document.getElementById('restartButton').style.display = 'block'; // Показать кнопку перезапуска
-    document.getElementById('feedback').innerText = ''; // Очистить предыдущее сообщение
+    document.getElementById('question').innerText = `Game over! You answered correctly ${correctAnswers} out of ${questions.length} questions.`;
+    document.getElementById('restartButton').style.display = 'block'; // Show restart button
+    document.getElementById('feedback').innerText = ''; // Clear previous message
 }
 
-// Функция для перезапуска игры
+// Function to restart the game
 function restartGame() {
-    loadQuestions(); // Перезагрузить вопросы и начать игру заново
+    loadQuestions(); // Reload questions and start the game again
 }
 
-// Загрузка вопросов при загрузке страницы
+// Load questions when the page loads
 loadQuestions();
