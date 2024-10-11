@@ -22,4 +22,53 @@ body {
 .button-container {
     display: flex; /* Используем Flexbox для размещения кнопок */
     justify-content: space-between; /* Распределение кнопок по краям */
-    margin: 20px 0; /* Отступы св
+    margin: 20px 0; /* Отступы сверху и снизу */
+}
+
+button {
+    padding: 15px 0; /* Отступы внутри кнопок */
+    margin: 10px; /* Отступы между кнопками */
+    font-size: 16px; /* Размер шрифта */
+    border: none; /* Убираем границы */
+    border-radius: 5px; /* Закругление углов кнопок */
+    cursor: pointer; /* Указатель курсора при наведении */
+    flex: 1; /* Заставляем кнопки занимать равную ширину */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+
+.green-btn {
+    background-color: #4CAF50; /* Зеленая кнопка */
+    color: white; /* Цвет текста кнопки */
+}
+
+.red-btn {
+    background-color: #f44336; /* Красная кнопка */
+    color: white; /* Цвет текста кнопки */
+}
+
+#next-btn {
+    display: none; /* Скрытая кнопка для следующего вопроса */
+    background-color: #008CBA; /* Цвет фона для кнопки "Следующий" */
+    color: white; /* Цвет текста кнопки */
+}
+
+.hide {
+    display: none; /* Скрытие элементов */
+}
+
+#imageContainer img {
+    max-width: 100%; /* Максимальная ширина изображений */
+    height: auto; /* Автоматическая высота изображений */
+    margin-top: 20px; /* Отступ сверху для изображений */
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px; /* Уменьшаем отступы в контейнере на мобильных */
+    }
+
+    button {
+        font-size: 14px; /* Уменьшаем размер шрифта для кнопок на мобильных */
+        padding: 10px 15px; /* Уменьшаем отступы для кнопок на мобильных */
+    }
+}
