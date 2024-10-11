@@ -9,6 +9,7 @@ const falseButton = document.getElementById('false-btn');
 const resultElement = document.getElementById('result');
 const nextButton = document.getElementById('next-btn');
 const imageContainer = document.getElementById('image-container');
+const questionNumberElement = document.getElementById('question-number');  // Новый элемент для отображения номера вопроса
 
 // Функция для загрузки вопросов из JSON файла
 fetch('questions.json')
@@ -16,16 +17,15 @@ fetch('questions.json')
         if (!response.ok) {
             throw new Error('Ошибка загрузки вопросов');
         }
+        console.log('Файл загружен успешно');
         return response.json();
     })
     .then(data => {
-        // Проверим, загружены ли данные корректно
+        console.log('Вопросы загружены:', data);
         if (data.length === 0) {
-            console.error("Вопросы не загружены");
             questionElement.innerText = "Ошибка: Вопросы не найдены.";
             return;
         }
-        // Получаем 10 случайных вопросов
         questions = getRandomQuestions(data, maxQuestions);
         startGame();
     })
@@ -58,6 +58,8 @@ function showQuestion() {
         return;
     }
 
+    // Добавление номера вопроса в текст
+    questionNumberElement.innerText = `Вопрос ${currentQuestionIndex + 1} из ${maxQuestions}`;
     questionElement.innerText = question.text;
 }
 
@@ -89,10 +91,11 @@ function handleAnswer(isTrue) {
 
 // Функция для поиска и показа изображения объекта с Unsplash
 function showImage(object) {
-    const unsplashURL = `https://source.unsplash.com/400x300/?${object}`;
+    // Генерируем уникальный URL для изображения, чтобы избежать кэширования
+    const unsplashURL = `https://source.unsplash.com/400x300/?${object}&${new Date().getTime()}`;
 
     // Вставка изображения на страницу
-    imageContainer.innerHTML = `<img src="${unsplashURL}" alt="${object}">`;
+    imageContainer.innerHTML = `<img src="${unsplashURL}" alt="${object}" style="max-width:100%;">`;
 }
 
 // Обработчики кликов на кнопки ответа
