@@ -52,8 +52,10 @@ function showQuestion() {
 
 // Функция для отображения изображения
 function showImage(object) {
-    const unsplashURL = `https://source.unsplash.com/400x300/?${encodeURIComponent(object)}`;
-    document.getElementById('imageContainer').innerHTML = `<img src="${unsplashURL}" alt="${object}" style="max-width:100%;">`;
+    const searchTerm = encodeURIComponent(object); // Кодируем запрос для URL
+    const freeImagesURL = `https://www.freeimages.com/search/${searchTerm}`; // Формируем URL для поиска изображений
+    document.getElementById('imageContainer').innerHTML = `
+        <a href="${freeImagesURL}" target="_blank">Нет картинки :(</a>`;
 }
 
 // Функция для обработки ответа
