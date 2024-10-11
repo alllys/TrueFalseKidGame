@@ -85,7 +85,7 @@ function showImage(object) {
     img.style.maxWidth = '100%';
 
     // Set the image source based on the object
-    img.src = `./img/${object}`; // Construct URL using the object name
+    img.src = `https://github.com/tabler/tabler-icons/blob/main/icons/outline/${object}.svg`; // Construct URL using the object name
 
     // Append the image to the image container
     imageContainer.appendChild(img);
