@@ -13,6 +13,7 @@
         .false-button { background-color: red; color: white; }
         #questionNumber { font-size: 20px; }
         #restartButton { display: none; }
+        #feedback { font-size: 20px; margin: 20px; }
     </style>
 </head>
 <body>
@@ -23,6 +24,7 @@
 <button class="button true-button" onclick="answer(true)">Правда</button>
 <button class="button false-button" onclick="answer(false)">Ложь</button>
 <button class="button" id="restartButton" onclick="restartGame()">Перезапустить игру</button>
+<div id="feedback"></div> <!-- Блок для отображения результатов ответа -->
 
 <script>
 let allQuestions = [];
@@ -53,6 +55,7 @@ function startGame() {
     currentQuestionIndex = 0;
     correctAnswers = 0;
     document.getElementById('restartButton').style.display = 'none'; // Скрыть кнопку перезапуска
+    document.getElementById('feedback').innerText = ''; // Очистить сообщения
     questions = getRandomQuestions(10); // Получить случайные 10 вопросов
     showQuestion();
 }
@@ -70,6 +73,7 @@ function showQuestion() {
         document.getElementById('question').innerText = question.text;
         document.getElementById('questionNumber').innerText = `Вопрос ${currentQuestionIndex + 1} из ${questions.length}`;
         showImage(question.object);
+        document.getElementById('feedback').innerText = ''; // Очистить предыдущее сообщение
     } else {
         endGame();
     }
@@ -84,12 +88,17 @@ function showImage(object) {
 // Функция для обработки ответа
 function answer(isTrue) {
     const question = questions[currentQuestionIndex];
+    const feedback = document.getElementById('feedback');
+
     if (question.answer === isTrue) {
         correctAnswers++;
-        alert('Правильно!');
+        feedback.innerText = 'Правильно!'; // Отображаем сообщение о правильном ответе
+        feedback.style.color = 'green'; // Задаем цвет текста
     } else {
-        alert('Неправильно!');
+        feedback.innerText = 'Неправильно!'; // Отображаем сообщение о неправильном ответе
+        feedback.style.color = 'red'; // Задаем цвет текста
     }
+
     currentQuestionIndex++;
     showQuestion();
 }
@@ -99,6 +108,7 @@ function endGame() {
     document.getElementById('question').innerText = `Игра окончена! Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
     document.getElementById('imageContainer').innerHTML = '';
     document.getElementById('restartButton').style.display = 'block'; // Показать кнопку перезапуска
+    document.getElementById('feedback').innerText = ''; // Очистить предыдущее сообщение
 }
 
 // Функция для перезапуска игры
