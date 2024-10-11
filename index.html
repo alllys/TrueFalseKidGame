@@ -4,75 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Правда или Ложь</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex; /* Используем flexbox */
-            flex-direction: column; /* Вертикальное выравнивание */
-            justify-content: center; /* Центрирование по вертикали */
-            align-items: center; /* Центрирование по горизонтали */
-            height: 100vh; /* Занимает всю высоту экрана */
-            margin: 0; /* Убираем отступы */
-            background-color: #f4f4f4; /* Фоновый цвет для лучшей видимости */
-        }
-
-        #question {
-            font-size: 24px;
-            margin: 20px;
-            text-align: center; /* Центрируем текст */
-        }
-
-        #imageContainer {
-            text-align: center;
-            margin: 20px;
-        }
-
-        .button {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .true-button {
-            background-color: green;
-            color: white;
-        }
-
-        .false-button {
-            background-color: red;
-            color: white;
-        }
-
-        #questionNumber {
-            font-size: 20px;
-            text-align: center; /* Центрируем текст */
-        }
-
-        #restartButton {
-            display: none;
-        }
-
-        #feedback {
-            font-size: 20px;
-            margin: 20px;
-            text-align: center; /* Центрируем текст */
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- Подключаем внешний CSS файл -->
 </head>
 <body>
 
-<div id="questionNumber"></div>
-<div id="question">Загрузка вопроса...</div>
-<div id="imageContainer"></div>
-<button class="button true-button" onclick="answer(true)">Правда</button>
-<button class="button false-button" onclick="answer(false)">Ложь</button>
-<button class="button" id="restartButton" onclick="restartGame()">Перезапустить игру</button>
-<div id="feedback"></div> <!-- Блок для отображения результатов ответа -->
+<div class="container">
+    <div id="questionNumber"></div>
+    <div id="question">Загрузка вопроса...</div>
+    <div id="imageContainer"></div>
+    <div class="button-container"> <!-- Контейнер для кнопок -->
+        <button class="button green-btn" onclick="answer(true)">Правда</button>
+        <button class="button red-btn" onclick="answer(false)">Ложь</button>
+    </div>
+    <button class="button" id="restartButton" onclick="restartGame()">Перезапустить игру</button>
+    <div id="feedback"></div> <!-- Блок для отображения результатов ответа -->
+</div>
 
 <script>
-    'use strict'; // Включаем строгий режим
-
     let allQuestions = [];
     let currentQuestionIndex = 0;
     let correctAnswers = 0;
@@ -150,7 +98,7 @@
         setTimeout(() => {
             currentQuestionIndex++;
             showQuestion();
-        }, 1000); // 3000 мс = 3 секунды
+        }, 1000); // 1000 мс = 1 секунда
     }
 
     // Функция для завершения игры
