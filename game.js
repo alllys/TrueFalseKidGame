@@ -44,6 +44,10 @@ function showQuestion() {
         document.getElementById('question').innerText = question.text;
         document.getElementById('questionNumber').innerText = `Вопрос ${currentQuestionIndex + 1} из ${questions.length}`;
         document.getElementById('feedback').innerText = ''; // Clear previous message
+
+        // Show image based on the object's name
+        showImage(question.object);
+        
     } else {
         endGame();
     }
@@ -63,9 +67,6 @@ function answer(isTrue) {
         feedback.innerText = 'Неправильно!'; // Show incorrect answer message
         feedback.style.color = 'red'; // Set text color
     }
-
-    // Show image based on the object's name
-    showImage(question.object);
 
     // Delay before showing the next question
     setTimeout(() => {
