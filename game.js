@@ -50,12 +50,29 @@ function showQuestion() {
     }
 }
 
-// Функция для отображения изображения
+// Функция для генерации текстового изображения
 function showImage(object) {
-    const searchTerm = encodeURIComponent(object); // Кодируем запрос для URL
-    const freeImagesURL = `https://www.freeimages.com/search/${searchTerm}`; // Формируем URL для поиска изображений
-    document.getElementById('imageContainer').innerHTML = `
-        <a href="${freeImagesURL}" target="_blank">Нет картинки :(</a>`;
+    const canvas = document.getElementById('textCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Устанавливаем размеры канваса
+    canvas.width = 400;  // ширина канваса
+    canvas.height = 300; // высота канваса
+
+    // Очищаем канвас
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Устанавливаем стиль текста
+    ctx.fillStyle = 'black'; // Цвет текста
+    ctx.font = '24px Arial'; // Шрифт текста
+    ctx.textAlign = 'center'; // Выравнивание текста по центру
+    ctx.textBaseline = 'middle'; // Выравнивание текста по вертикали
+
+    // Рисуем текст на канвасе
+    ctx.fillText(`Нет картинки для: ${object}`, canvas.width / 2, canvas.height / 2);
+
+    // Отображаем канвас
+    canvas.style.display = 'block';
 }
 
 // Функция для обработки ответа
@@ -83,7 +100,7 @@ function answer(isTrue) {
 // Функция для завершения игры
 function endGame() {
     document.getElementById('question').innerText = `Игра окончена! Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
-    document.getElementById('imageContainer').innerHTML = '';
+    document.getElementById('imageContainer').innerHTML = ''; // Очистить контейнер для изображений
     document.getElementById('restartButton').style.display = 'block'; // Показать кнопку перезапуска
     document.getElementById('feedback').innerText = ''; // Очистить предыдущее сообщение
 }
