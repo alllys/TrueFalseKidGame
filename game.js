@@ -1,119 +1,95 @@
-let questions = [];
+let allQuestions = [];
 let currentQuestionIndex = 0;
-let score = 0;
-const maxQuestions = 10;
+let correctAnswers = 0;
+let questions = []; // Массив для 10 вопросов
 
-const questionElement = document.getElementById('question');
-const trueButton = document.getElementById('true-btn');
-const falseButton = document.getElementById('false-btn');
-const resultElement = document.getElementById('result');
-const nextButton = document.getElementById('next-btn');
-const imageContainer = document.getElementById('image-container');
-const questionNumberElement = document.getElementById('question-number');  // Новый элемент для отображения номера вопроса
-
-// Функция для загрузки вопросов из JSON файла
-fetch('questions.json')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Ошибка загрузки вопросов');
-        }
-        console.log('Файл загружен успешно');
-        return response.json();
-    })
-    .then(data => {
-        console.log('Вопросы загружены:', data);
-        if (data.length === 0) {
-            questionElement.innerText = "Ошибка: Вопросы не найдены.";
-            return;
-        }
-        questions = getRandomQuestions(data, maxQuestions);
-        startGame();
-    })
-    .catch(error => {
-        console.error('Ошибка при загрузке файла JSON:', error);
-        questionElement.innerText = 'Ошибка при загрузке вопросов.';
-    });
-
-// Функция для выбора случайных вопросов
-function getRandomQuestions(data, numQuestions) {
-    const shuffled = data.sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, numQuestions);
+// Функция для загрузки вопросов
+function loadQuestions() {
+    fetch('questions.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Сеть не отвечает');
+            }
+            return response.json();
+        })
+        .then(data => {
+            allQuestions = data;
+            startGame();
+        })
+        .catch(error => {
+            console.error('Ошибка при загрузке вопросов:', error);
+        });
 }
 
-// Начать игру
+// Функция для начала игры
 function startGame() {
     currentQuestionIndex = 0;
-    score = 0;
-    nextButton.classList.add('hide');
+    correctAnswers = 0;
+    document.getElementById('restartButton').style.display = 'none'; // Скрыть кнопку перезапуска
+    document.getElementById('feedback').innerText = ''; // Очистить сообщения
+    questions = getRandomQuestions(10); // Получить случайные 10 вопросов
     showQuestion();
 }
 
-// Показать следующий вопрос
+// Функция для получения случайных вопросов
+function getRandomQuestions(num) {
+    const shuffled = allQuestions.sort(() => 0.5 - Math.random()); // Перемешать вопросы
+    return shuffled.slice(0, num); // Вернуть первые num вопросов
+}
+
+// Функция для отображения текущего вопроса
 function showQuestion() {
-    resetState();
-    let question = questions[currentQuestionIndex];
-    
-    if (!question) {
-        questionElement.innerText = "Ошибка: вопрос не найден";
-        return;
-    }
-
-    // Добавление номера вопроса в текст
-    questionNumberElement.innerText = `Вопрос ${currentQuestionIndex + 1} из ${maxQuestions}`;
-    questionElement.innerText = question.text;
-}
-
-// Сброс состояния для нового вопроса
-function resetState() {
-    resultElement.innerHTML = '';
-    imageContainer.innerHTML = '';
-    nextButton.classList.add('hide');
-}
-
-// Обработчик ответа
-function handleAnswer(isTrue) {
-    const question = questions[currentQuestionIndex];
-    const correct = question.answer === isTrue;
-    
-    if (correct) {
-        resultElement.innerText = 'Правильно!';
-        score++;
-    } else {
-        resultElement.innerText = 'Неправильно!';
-    }
-
-    // Показать изображение после ответа
-    showImage(question.object);
-
-    // Показать кнопку для следующего вопроса
-    nextButton.classList.remove('hide');
-}
-
-// Функция для поиска и показа изображения объекта с Unsplash
-function showImage(object) {
-    // Генерируем уникальный URL для изображения, чтобы избежать кэширования
-    const unsplashURL = `https://image.pollinations.ai/prompt/?${object}`;
-
-    // Вставка изображения на страницу
-    imageContainer.innerHTML = `<img src="${unsplashURL}" alt="${object}" style="max-width:100%;">`;
-}
-
-// Обработчики кликов на кнопки ответа
-trueButton.addEventListener('click', () => handleAnswer(true));
-falseButton.addEventListener('click', () => handleAnswer(false));
-
-// Следующий вопрос
-nextButton.addEventListener('click', () => {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < maxQuestions) {
-        showQuestion();
+    if (currentQuestionIndex < questions.length) {
+        const question = questions[currentQuestionIndex];
+        document.getElementById('question').innerText = question.text;
+        document.getElementById('questionNumber').innerText = `Вопрос ${currentQuestionIndex + 1} из ${questions.length}`;
+        showImage(question.object);
+        document.getElementById('feedback').innerText = ''; // Очистить предыдущее сообщение
     } else {
         endGame();
     }
-});
-
-// Завершить игру
-function endGame() {
-    questionElement.innerText = `Игра окончена! Ваш результат: ${score} из ${maxQuestions}`;
-    nextButton.classList.add('hide');
 }
+
+// Функция для отображения изображения
+function showImage(object) {
+    const unsplashURL = `https://source.unsplash.com/400x300/?${encodeURIComponent(object)}`;
+    document.getElementById('imageContainer').innerHTML = `<img src="${unsplashURL}" alt="${object}" style="max-width:100%;">`;
+}
+
+// Функция для обработки ответа
+function answer(isTrue) {
+    const question = questions[currentQuestionIndex];
+    const feedback = document.getElementById('feedback');
+
+    // Проверяем правильность ответа
+    if (question.answer === isTrue) {
+        correctAnswers++;
+        feedback.innerText = 'Правильно!'; // Отображаем сообщение о правильном ответе
+        feedback.style.color = 'green'; // Задаем цвет текста
+    } else {
+        feedback.innerText = 'Неправильно!'; // Отображаем сообщение о неправильном ответе
+        feedback.style.color = 'red'; // Задаем цвет текста
+    }
+
+    // Задержка перед показом следующего вопроса
+    setTimeout(() => {
+        currentQuestionIndex++;
+        showQuestion();
+    }, 1000); // 1000 мс = 1 секунда
+}
+
+// Функция для завершения игры
+function endGame() {
+    document.getElementById('question').innerText = `Игра окончена! Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
+    document.getElementById('imageContainer').innerHTML = '';
+    document.getElementById('restartButton').style.display = 'block'; // Показать кнопку перезапуска
+    document.getElementById('feedback').innerText = ''; // Очистить предыдущее сообщение
+}
+
+// Функция для перезапуска игры
+function restartGame() {
+    loadQuestions(); // Перезагрузить вопросы и начать игру заново
+}
+
+// Загрузка вопросов при загрузке страницы
+loadQuestions();
