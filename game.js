@@ -12,10 +12,26 @@ const imageContainer = document.getElementById('image-container');
 
 // Функция для загрузки вопросов из JSON файла
 fetch('questions.json')
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ошибка загрузки вопросов');
+        }
+        return response.json();
+    })
     .then(data => {
+        // Проверим, загружены ли данные корректно
+        if (data.length === 0) {
+            console.error("Вопросы не загружены");
+            questionElement.innerText = "Ошибка: Вопросы не найдены.";
+            return;
+        }
+        // Получаем 10 случайных вопросов
         questions = getRandomQuestions(data, maxQuestions);
         startGame();
+    })
+    .catch(error => {
+        console.error('Ошибка при загрузке файла JSON:', error);
+        questionElement.innerText = 'Ошибка при загрузке вопросов.';
     });
 
 // Функция для выбора случайных вопросов
@@ -36,6 +52,12 @@ function startGame() {
 function showQuestion() {
     resetState();
     let question = questions[currentQuestionIndex];
+    
+    if (!question) {
+        questionElement.innerText = "Ошибка: вопрос не найден";
+        return;
+    }
+
     questionElement.innerText = question.text;
 }
 
@@ -43,6 +65,7 @@ function showQuestion() {
 function resetState() {
     resultElement.innerHTML = '';
     imageContainer.innerHTML = '';
+    nextButton.classList.add('hide');
 }
 
 // Обработчик ответа
