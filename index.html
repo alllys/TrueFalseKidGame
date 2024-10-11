@@ -7,20 +7,20 @@
     <link rel="stylesheet" href="styles.css"> <!-- Подключаем внешний CSS файл -->
 </head>
 <body>
-    <div class="container">
-        <h1>Игра: Правда или Ложь</h1>
-        <div id="game-container">
-            <div id="question-container">
-                <p id="question">Загрузка вопроса...</p>
-            </div>
-            <div id="answer-buttons">
-                <button id="true-btn">Правда</button>
-                <button id="false-btn">Ложь</button>
-            </div>
-            <div id="result"></div>
-            <div id="image-container"></div>
-        </div>
-        <button id="next-btn">Следующий вопрос</button>
+
+<div class="container">
+    <div id="questionNumber"></div>
+    <div id="question">Загрузка вопроса...</div>
+    <div id="imageContainer"></div>
+    <div class="button-container"> <!-- Контейнер для кнопок -->
+        <button class="button green-btn" onclick="answer(true)">Правда</button>
+        <button class="button red-btn" onclick="answer(false)">Ложь</button>
     </div>
-    <script src="game.js"></script>
+    <button class="button" id="restartButton" onclick="restartGame()">Перезапустить игру</button>
+    <div id="feedback"></div> <!-- Блок для отображения результатов ответа -->
+</div>
+
+<script src="game.js"></script> <!-- Подключаем внешний JS файл -->
+
+</body>
 </html>
