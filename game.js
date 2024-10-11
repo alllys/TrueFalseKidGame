@@ -92,7 +92,7 @@ function handleAnswer(isTrue) {
 // Функция для поиска и показа изображения объекта с Unsplash
 function showImage(object) {
     // Генерируем уникальный URL для изображения, чтобы избежать кэширования
-    const unsplashURL = `https://source.unsplash.com/400x300/?${object}&${new Date().getTime()}`;
+    const unsplashURL = `https://image.pollinations.ai/prompt/?${object}`;
 
     // Вставка изображения на страницу
     imageContainer.innerHTML = `<img src="${unsplashURL}" alt="${object}" style="max-width:100%;">`;
