@@ -42,7 +42,7 @@ function showQuestion() {
     if (currentQuestionIndex < questions.length) {
         const question = questions[currentQuestionIndex];
         document.getElementById('question').innerText = question.text;
-        document.getElementById('questionNumber').innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+        document.getElementById('questionNumber').innerText = `Вопрос ${currentQuestionIndex + 1} из ${questions.length}`;
         document.getElementById('feedback').innerText = ''; // Clear previous message
     } else {
         endGame();
@@ -57,15 +57,15 @@ function answer(isTrue) {
     // Check answer correctness
     if (question.answer === isTrue) {
         correctAnswers++;
-        feedback.innerText = 'Correct!'; // Show correct answer message
+        feedback.innerText = 'Правильно!'; // Show correct answer message
         feedback.style.color = 'green'; // Set text color
     } else {
-        feedback.innerText = 'Incorrect!'; // Show incorrect answer message
+        feedback.innerText = 'Неправильно!'; // Show incorrect answer message
         feedback.style.color = 'red'; // Set text color
     }
 
-    // Show image based on answer correctness
-    showImage(question.answer);
+    // Show image based on the object's name
+    showImage(question.object);
 
     // Delay before showing the next question
     setTimeout(() => {
@@ -74,8 +74,8 @@ function answer(isTrue) {
     }, 2000); // 2000 ms = 2 seconds
 }
 
-// Function to display image based on answer
-function showImage(isTrue) {
+// Function to display image based on the object's name
+function showImage(object) {
     const imageContainer = document.getElementById('imageContainer');
     imageContainer.innerHTML = ''; // Clear previous image
 
@@ -83,12 +83,8 @@ function showImage(isTrue) {
     const img = document.createElement('img');
     img.style.maxWidth = '100%';
 
-    // Set the image source based on the answer
-    if (isTrue) {
-        img.src = 'https://img.icons8.com/dog'; // Replace with an appropriate image URL for true answer
-    } else {
-        img.src = 'https://img.icons8.com/cat'; // Replace with an appropriate image URL for false answer
-    }
+    // Set the image source based on the object
+    img.src = `https://img.icons8.com/${object}`; // Construct URL using the object name
 
     // Append the image to the image container
     imageContainer.appendChild(img);
@@ -96,7 +92,7 @@ function showImage(isTrue) {
 
 // Function to end the game
 function endGame() {
-    document.getElementById('question').innerText = `Game over! You answered correctly ${correctAnswers} out of ${questions.length} questions.`;
+    document.getElementById('question').innerText = `Игра окончена! Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
     document.getElementById('restartButton').style.display = 'block'; // Show restart button
     document.getElementById('feedback').innerText = ''; // Clear previous message
 }
