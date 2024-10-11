@@ -50,7 +50,25 @@ function showQuestion() {
     }
 }
 
-// Функция для генерации текстового изображения
+// Функция для генерации ASCII-арт
+function generateAsciiArt(object) {
+    const asciiArt = `
+          ,--.
+       ,--.'|
+   ,--,|  | :                    ,--,
+,---.'|  | |                    |  |
+|   | : _,'|  .--,      ,--,  ,--,|
+:   : |/  /| /       \   /   |   | |
+|   |   .  /| .--, |   |   |   | |
+|   |  |  | . |  | |   |   |   | |
+'   |  |  | | |  | |   |   |   | |
+|   |  |  | | |  | |   |   |   | |
+'---'--'---' '---'---'   '---'---'
+    `;
+    return asciiArt.replace(/ +/g, ' '); // Удаление лишних пробелов
+}
+
+// Функция для отображения ASCII-арт на канвасе
 function showImage(object) {
     const canvas = document.getElementById('textCanvas');
     const ctx = canvas.getContext('2d');
@@ -64,12 +82,18 @@ function showImage(object) {
 
     // Устанавливаем стиль текста
     ctx.fillStyle = 'black'; // Цвет текста
-    ctx.font = '24px Arial'; // Шрифт текста
-    ctx.textAlign = 'center'; // Выравнивание текста по центру
-    ctx.textBaseline = 'middle'; // Выравнивание текста по вертикали
+    ctx.font = '16px monospace'; // Шрифт текста
+    ctx.textAlign = 'left'; // Выравнивание текста
+    ctx.textBaseline = 'top'; // Выравнивание текста по верху
 
-    // Рисуем текст на канвасе
-    ctx.fillText(`Нет картинки для: ${object}`, canvas.width / 2, canvas.height / 2);
+    // Генерируем ASCII-арт
+    const asciiArt = generateAsciiArt(object);
+    const lines = asciiArt.split('\n'); // Разбиваем ASCII-арт на строки
+
+    // Рисуем каждую строку на канвасе
+    lines.forEach((line, index) => {
+        ctx.fillText(line, 10, 20 + index * 20); // Отрисовка строки
+    });
 
     // Отображаем канвас
     canvas.style.display = 'block';
