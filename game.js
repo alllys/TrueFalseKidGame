@@ -44,9 +44,6 @@ function showQuestion() {
         document.getElementById('question').innerText = question.text;
         document.getElementById('questionNumber').innerText = `Вопрос ${currentQuestionIndex + 1} из ${questions.length}`;
         document.getElementById('feedback').innerText = ''; // Clear previous message
-
-        // Show image based on the object's name
-        showImage(question.object);
         
     } else {
         endGame();
@@ -73,22 +70,6 @@ function answer(isTrue) {
         currentQuestionIndex++;
         showQuestion();
     }, 2000); // 2000 ms = 2 seconds
-}
-
-// Function to display image based on the object's name
-function showImage(object) {
-    const imageContainer = document.getElementById('imageContainer');
-    imageContainer.innerHTML = ''; // Clear previous image
-
-    // Create an image element
-    const img = document.createElement('img');
-    img.style.maxWidth = '100%';
-
-    // Set the image source based on the object
-    img.src = `https://img.icons8.com/${object}`; // Construct URL using the object name
-
-    // Append the image to the image container
-    imageContainer.appendChild(img);
 }
 
 // Function to end the game
