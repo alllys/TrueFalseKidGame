@@ -19,6 +19,12 @@ body {
     margin: 0 auto; /* Центрирование контейнера */
 }
 
+.button-container {
+    display: flex; /* Используем Flexbox для размещения кнопок */
+    justify-content: space-between; /* Распределение кнопок по краям */
+    margin: 20px 0; /* Отступы сверху и снизу */
+}
+
 button {
     padding: 15px 25px; /* Отступы внутри кнопок */
     margin: 10px; /* Отступы между кнопками */
