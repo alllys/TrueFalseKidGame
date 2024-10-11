@@ -65,11 +65,30 @@ function answer(isTrue) {
         feedback.style.color = 'red'; // Set text color
     }
 
+    // Show image based on the object's name
+    showImage(question.object);
+    
     // Delay before showing the next question
     setTimeout(() => {
         currentQuestionIndex++;
         showQuestion();
     }, 2000); // 2000 ms = 2 seconds
+}
+
+// Function to display image based on the object's name
+function showImage(object) {
+    const imageContainer = document.getElementById('imageContainer');
+    imageContainer.innerHTML = ''; // Clear previous image
+
+    // Create an image element
+    const img = document.createElement('img');
+    img.style.maxWidth = '100%';
+
+    // Set the image source based on the object
+    img.src = `https://lucide.dev/icons/${object}`; // Construct URL using the object name
+
+    // Append the image to the image container
+    imageContainer.appendChild(img);
 }
 
 // Function to end the game
