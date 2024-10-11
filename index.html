@@ -3,70 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Правда или Ложь - Игра</title>
+    <title>Правда или Ложь</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        #game-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .button-container {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 10px;
-            cursor: pointer;
-        }
-        #next-btn {
-            margin-top: 20px;
-        }
-        .hide {
-            display: none;
-        }
-        img {
-            margin-top: 20px;
-            max-width: 100%;
-            height: auto;
-        }
+        body { font-family: Arial, sans-serif; }
+        #question { font-size: 24px; margin: 20px; }
+        #imageContainer { text-align: center; margin: 20px; }
+        .button { margin: 10px; padding: 10px 20px; font-size: 18px; cursor: pointer; }
+        .true-button { background-color: green; color: white; }
+        .false-button { background-color: red; color: white; }
+        #questionNumber { font-size: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="game-container">
-        <!-- Номер вопроса будет отображаться здесь -->
-        <h2 id="question-number"></h2> 
+<div id="questionNumber"></div>
+<div id="question">Загрузка вопроса...</div>
+<div id="imageContainer"></div>
+<button class="button true-button" onclick="answer(true)">Правда</button>
+<button class="button false-button" onclick="answer(false)">Ложь</button>
 
-        <!-- Здесь будет текст вопроса -->
-        <h3 id="question">Загрузка вопроса...</h3>
+<script>
+let questions = [];
+let currentQuestionIndex = 0;
+let correctAnswers = 0;
 
-        <!-- Контейнер для кнопок Правда/Ложь -->
-        <div class="button-container">
-            <button id="true-btn" style="background-color: green;">Правда</button>
-            <button id="false-btn" style="background-color: red;">Ложь</button>
-        </div>
+// Функция для загрузки вопросов
+function loadQuestions() {
+    fetch('questions.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Сеть не отвечает');
+            }
+            return response.json();
+        })
+        .then(data => {
+            questions = data;
+            startGame();
+        })
+        .catch(error => {
+            console.error('Ошибка при загрузке вопросов:', error);
+        });
+}
 
-        <!-- Элемент для отображения результата ответа -->
-        <div id="result"></div>
+// Функция для начала игры
+function startGame() {
+    currentQuestionIndex = 0;
+    correctAnswers = 0;
+    showQuestion();
+}
 
-        <!-- Контейнер для изображения -->
-        <div id="image-container"></div>
+// Функция для отображения текущего вопроса
+function showQuestion() {
+    if (currentQuestionIndex < questions.length) {
+        const question = questions[currentQuestionIndex];
+        document.getElementById('question').innerText = question.text;
+        document.getElementById('questionNumber').innerText = `Вопрос ${currentQuestionIndex + 1} из ${questions.length}`;
+        showImage(question.object);
+    } else {
+        endGame();
+    }
+}
 
-        <!-- Кнопка для перехода к следующему вопросу -->
-        <button id="next-btn" class="hide">Следующий вопрос</button>
-    </div>
+// Функция для отображения изображения
+function showImage(object) {
+    const unsplashURL = `https://source.unsplash.com/400x300/?${encodeURIComponent(object)}`;
+    document.getElementById('imageContainer').innerHTML = `<img src="${unsplashURL}" alt="${object}" style="max-width:100%;">`;
+}
 
-    <script src="game.js"></script>
+// Функция для обработки ответа
+function answer(isTrue) {
+    const question = questions[currentQuestionIndex];
+    if (question.answer === isTrue) {
+        correctAnswers++;
+        alert('Правильно!');
+    } else {
+        alert('Неправильно!');
+    }
+    currentQuestionIndex++;
+    showQuestion();
+}
+
+// Функция для завершения игры
+function endGame() {
+    document.getElementById('question').innerText = `Игра окончена! Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
+    document.getElementById('imageContainer').innerHTML = '';
+}
+
+// Загрузка вопросов при загрузке страницы
+loadQuestions();
+</script>
 
 </body>
 </html>
