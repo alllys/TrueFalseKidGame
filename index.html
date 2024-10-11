@@ -90,6 +90,7 @@ function answer(isTrue) {
     const question = questions[currentQuestionIndex];
     const feedback = document.getElementById('feedback');
 
+    // Проверяем правильность ответа
     if (question.answer === isTrue) {
         correctAnswers++;
         feedback.innerText = 'Правильно!'; // Отображаем сообщение о правильном ответе
@@ -99,8 +100,11 @@ function answer(isTrue) {
         feedback.style.color = 'red'; // Задаем цвет текста
     }
 
-    currentQuestionIndex++;
-    showQuestion();
+    // Задержка перед показом следующего вопроса
+    setTimeout(() => {
+        currentQuestionIndex++;
+        showQuestion();
+    }, 1000); // 1000 мс = 1 секунда
 }
 
 // Функция для завершения игры
