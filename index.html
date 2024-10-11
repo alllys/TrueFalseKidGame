@@ -75,7 +75,7 @@
 
     // Функция для отображения изображения
     function showImage(object) {
-        const unsplashURL = `https://source.unsplash.com/400x300/?${encodeURIComponent(object)}`;
+        const unsplashURL = `https://image.pollinations.ai/prompt/?${encodeURIComponent(object)}`;
         document.getElementById('imageContainer').innerHTML = `<img src="${unsplashURL}" alt="${object}" style="max-width:100%;">`;
     }
 
