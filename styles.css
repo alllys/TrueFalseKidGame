@@ -19,6 +19,12 @@ body {
     margin: 0 auto; /* Центрирование контейнера */
 }
 
+#question {
+    font-size: 24px; /* Размер шрифта */
+    font-weight: bold; /* Можно добавить жирность, если хотите */
+    margin-top: 20px; /* Отступ сверху для вопроса */
+}
+
 .button-container {
     display: flex; /* Используем Flexbox для размещения кнопок */
     justify-content: space-between; /* Распределение кнопок по краям */
