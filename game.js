@@ -61,10 +61,10 @@ function answer(isTrue) {
     // Check answer correctness
     if (question.answer === isTrue) {
         correctAnswers++;
-        feedback.innerText = 'Правильно!'; // Show correct answer message
+        feedback.innerText = 'Правильно! 😊'; // Show correct answer message
         feedback.style.color = 'green'; // Set text color
     } else {
-        feedback.innerText = 'Неправильно!'; // Show incorrect answer message
+        feedback.innerText = 'Неправильно! 😢'; // Show incorrect answer message
         feedback.style.color = 'red'; // Set text color
     }
     
@@ -85,7 +85,7 @@ function showImage(object) {
     img.style.maxWidth = '100%';
 
     // Set the image source based on the object
-    img.src = `https://img.icons8.com//${object}`; // Construct URL using the object name
+    img.src = `https://img.icons8.com/${object}`; // Construct URL using the object name
 
     // Append the image to the image container
     imageContainer.appendChild(img);
@@ -93,7 +93,29 @@ function showImage(object) {
 
 // Function to end the game
 function endGame() {
-    document.getElementById('question').innerText = `Игра окончена! Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
+    const imageContainer = document.getElementById('imageContainer');
+    imageContainer.innerHTML = ''; // Clear previous image
+
+    // Create an image element
+    const img = document.createElement('img');
+    img.style.maxWidth = '100%';
+    
+    // Check answer correctness
+    if (correctAnswers > 5) {
+        document.getElementById('question').innerText = `Игра окончена! 😊 Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
+
+        // Set the image source based on the object
+        img.src = `/img/confetti.gif`; // Construct URL using the object name
+    } else {
+        document.getElementById('question').innerText = `Игра окончена! 😢 Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
+
+        // Set the image source based on the object
+        img.src = `/img/reset.gif`; // Construct URL using the object name
+    }
+
+    // Append the image to the image container
+    imageContainer.appendChild(img);
+    
     document.getElementById('restartButton').style.display = 'block'; // Show restart button
     document.getElementById('feedback').innerText = ''; // Clear previous message
 }
