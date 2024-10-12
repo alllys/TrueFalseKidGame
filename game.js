@@ -105,7 +105,7 @@ function endGame() {
         document.getElementById('question').innerText = `Игра окончена! 😊 Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
 
         // Set the image source based on the object
-        img.src = `/TrueFalseKidGame/img/confetti.gif`; // Construct URL using the object name
+        img.src = `/TrueFalseKidGame/img/firework.gif`; // Construct URL using the object name
     } else {
         document.getElementById('question').innerText = `Игра окончена! 😢 Вы ответили правильно на ${correctAnswers} из ${questions.length} вопросов.`;
 
